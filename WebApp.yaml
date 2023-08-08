@@ -1,0 +1,39 @@
+version: '3'
+services:
+
+  my-py-webapp:
+    image: py-flask-webapp:0.1
+    ports:
+      - 5000:5000
+    environment:
+      - MONGO_DB_URL=mongodb://root:root@my-mongo 
+
+  my-mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - mongo-data:/data/db
+             
+  my-mongo-express:
+    image: mongo-express
+    ports:
+      - 8080:8081
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=root
+      - ME_CONFIG_MONGODB_SERVER=my-mongo
+    depends_on:
+      - my-mongo
+volumes:
+ mongo-data:
+
+
+
+    
+
+# No need to define a network if using docker-compose

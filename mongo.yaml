@@ -1,0 +1,26 @@
+version: '3'
+services:
+  my-mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    
+             
+  my-mongo-express:
+    image: mongo-express
+    ports:
+      - 8080:8081
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=root
+      - ME_CONFIG_MONGODB_SERVER=my-mongo
+    depends_on:
+      - my-mongo
+
+    
+
+# No need to define a network if using docker-compose
